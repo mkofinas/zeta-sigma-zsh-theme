@@ -16,6 +16,7 @@ function echo_right_prompt() {
   echo $right_prompt
 }
 
+current_directory=${0:a:h}
 
 # ZSH_THEME_GIT_COLORS["current_branch"]="%{$fg_bold[yellow]%}"
 
@@ -23,14 +24,13 @@ function echo_right_prompt() {
 
 ZSH_THEME_VIRTUALENV_PREFIX="%{\e[1;33m%} %{\e[0m%}%{\e[1;31m%}["
 ZSH_THEME_VIRTUALENV_SUFFIX="]%{\e[0m%}"
-
 # $'%{\e[1;33m%}@%{\e[0m%}'\
 # $'%{\e[1;35m%}%m%{\e[0m%}'\
 PROMPT=$'%{\e[1;33m%} %{\e[0m%}'\
 $'%{\e[0;36m%}%n%{\e[0m%}'\
 $'%{\e[1;33m%}:%{\e[0m%}'\
 $'%{\e[1;31m%}[%{\e[0m%}'\
-$'%{\e[2;31m%}$(python ${0:a:h}/trim_cwd.py 2)%{\e[0m%}'\
+$'%{\e[2;31m%}$(python ${current_directory}/trim_cwd.py 2)%{\e[0m%}'\
 $'%{\e[1;31m%}]%{\e[0m%}\n'\
 $'%(?,%{\e[2;32m%}│%{\e[1;34m%}𝒁%{\e[2;32m%}├──▶,%{\e[2;31m%}│%{\e[1;34m%}𝒁%{\e[2;31m%}├──▶)%{\e[0m%} '
 
