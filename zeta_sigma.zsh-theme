@@ -12,8 +12,6 @@
 #                               Helper Variables                               #
 ################################################################################
 
-current_directory=${0:a:h}
-
 # ZLE_RPROMPT_INDENT=0
 
 # NORMAL_MODE_INDICATOR="%{$fg[red]%}[ NORMAL]%{$reset_color%}"
@@ -22,6 +20,25 @@ current_directory=${0:a:h}
 ################################################################################
 #                               Helper Functions                               #
 ################################################################################
+
+function prompt_zeta_sigma_pwd {
+  local pwd="${PWD/#$HOME/~}"
+
+  if [[ "$pwd" == (#m)[/~] ]]; then
+    _prompt_zeta_sigma_pwd="$MATCH"
+    unset MATCH
+  else
+    local pwd_without_tilde="${PWD/#$HOME/}"
+    local prompt_zeta_sigma_pwd_prefix="${pwd%%/*}/"
+    if [[ "${#${(@s:/:)pwd_without_tilde}}">3 ]]; then
+      prompt_zeta_sigma_pwd_prefix="${prompt_zeta_sigma_pwd_prefix}.../"
+    fi
+    local -a last_two_directories
+    last_two_directories=(${pwd_without_tilde:h:t} ${pwd_without_tilde:t})
+    _prompt_zeta_sigma_pwd="${prompt_zeta_sigma_pwd_prefix}${(@j:/:M)last_two_directories}"
+  fi
+  echo "${_prompt_zeta_sigma_pwd}"
+}
 
 # Right Prompt
 function echo_right_prompt() {
@@ -47,7 +64,7 @@ function echo_left_prompt() {
   }
 
   function left_prompt_directory() {
-    echo "%{$fg_bold[red]%}[%{$fg_no_bold[red]%}$(python ${current_directory}/trim_cwd.py 2)%{$fg_bold[red]%}]%{$fg_no_bold[default]%}"
+    echo "%{$fg_bold[red]%}[%{$fg_no_bold[red]%}$(prompt_zeta_sigma_pwd)%{$fg_bold[red]%}]%{$fg_no_bold[default]%}"
   }
 
   function left_prompt_zsh_prompt() {
